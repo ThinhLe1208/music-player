@@ -139,7 +139,7 @@ input[type="range"]::-webkit-slider-thumb {
   inset: 0;
   width: 100%;
   height: 100%;
-  background-image: url("/image/player_bg.jpg");
+  background-image: url("../image/player_bg.jpg");
   background-repeat: no-repeat;
   background-position: 100% 100%;
   background-size: cover;
@@ -190,9 +190,6 @@ input[type="range"]::-webkit-slider-thumb {
 .offcanvas,
 .offcanvas-backdrop {
   position: absolute;
-}
-
-.header__sidebar {
 }
 
 .header__sidebar-heading {
