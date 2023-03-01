@@ -170,8 +170,7 @@ const app = {
                 _this.nextSong();
             }
 
-            _this.loadCurrentSong();
-            _this.checkPlaying();
+            audio.play();
         };
 
         // Handle when click pre button
@@ -182,8 +181,7 @@ const app = {
                 _this.preSong();
             }
 
-            _this.loadCurrentSong();
-            _this.checkPlaying();
+            audio.play();
         };
 
         // Handle when click repeat button 
@@ -223,6 +221,7 @@ const app = {
 
         // ===================== List of Songs =======================
 
+        // Handle choose song from list
         listOfSongs.onclick = function (e) {
             const songNode = e.target.closest('.header__song');
 
@@ -230,7 +229,7 @@ const app = {
                 _this.currentIndex = songNode.getAttribute('data-index');
 
                 _this.loadCurrentSong();
-                _this.checkPlaying();
+                audio.play();
             }
         };
     },
@@ -269,15 +268,7 @@ const app = {
         this.loadCurrentSong();
     },
 
-    checkPlaying: function () {
-        if (this.isPlaying) {
-            audio.play();
-        }
-    },
-
-
     start: function () {
-
         // Define properties
         this.defineProperties();
 
@@ -295,6 +286,3 @@ const app = {
 };
 
 app.start();
-
-// sua loi interval khong xoa duoc
-// progress hien thi loi chay ra giua khi chuyen song
