@@ -46,7 +46,7 @@
                         <p class="header__logo-name">Music Player</p>
                     </div>
 
-                    <div class="header__button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+                    <div class="header__sidebar-btn" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
                         <i class="fa-solid fa-bars"></i>
                     </div>
 
@@ -65,78 +65,101 @@
 
                         <div class="header__sidebar-footer">
                             <i class="fa-solid fa-arrow-down-wide-short"></i>
-                            <p>Sort</p>
+                            <p>Sort:</p>
+
+                            <div class="dropdown">
+                                <button class="header__sort-btn btn btn-dark dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Sorted by Song
+                                </button>
+
+                                <ul class="header__sort-list dropdown-menu">
+                                    <li><a class="header__sort-item dropdown-item" href="#">
+                                            <i class="fa-solid fa-music"></i>
+                                            Sorted by Song
+                                        </a></li>
+                                    <li><a class="header__sort-item dropdown-item" href="#">
+                                            <i class="fa-solid fa-compact-disc"></i>
+                                            Sorted by Singer
+                                        </a></li>
+                                    <li><a class="header__sort-item dropdown-item" href="#">
+                                            <i class="fa-solid fa-headphones"></i>
+                                            Sorted by Listenning
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </header>
 
                 <!-- Player content -->
-                <main class="content">
+                <main class="display">
 
-                    <div class="content__left">
-                        <div class="content__left-heading">
-                            <img class="content__song-img" src="./image/g2.jpg" alt="song-img">
-                            <div class="content__info">
-                                <h3 class="content__song-name">Night Changes</h3>
-                                <p class="content__artist-name">
+                    <div class="display__left">
+                        <div class="display__left-heading">
+                            <img class="display__song-img" src="./image/g2.jpg" alt="song-img">
+                            <div class="display__info">
+                                <h3 class="display__song-name">Night Changes</h3>
+                                <p class="display__artist-name">
                                     One Direction
                                     <i class="fa-regular fa-heart"></i>
                                 </p>
                             </div>
                         </div>
 
-                        <div class="content__left-state">
-                            <div class="content__playing">
+                        <div class="display__left-state">
+                            <div class="display__playing">
                                 <i class="fa-regular fa-circle-play"></i>
                                 <p>Now playing</p>
                             </div>
-                            <div class="content__listening">
+                            <div class="display__listening">
                                 <i class="fa-solid fa-headphones"></i>
-                                <span class="content__listening-count">166 listening</span>
+                                <span class="display__listening-count">166 listening</span>
                             </div>
                         </div>
 
-                        <div class="content__left-cover">
+                        <div class="display__left-cover">
                             <div class="overlay"></div>
-                            <marquee class="content__cover-info" behavior="" direction="">Lorem ipsum dolor sit amet,
+                            <marquee class="display__cover-info" behavior="" direction="">Lorem ipsum dolor sit amet,
                                 consectetur adipisicing elit.
                                 Quisquam quibusdam consequatur quo ipsam illum, assumenda, nostrum praesentium at, non
                                 aut a
                                 ut eos.</marquee>
-                            <img class="content__cover-img" src="./image/g4.jpg" alt="cover-img">
+                            <img class="display__cover-img" src="./image/g4.jpg" alt="cover-img">
                         </div>
 
-                        <div class="content__left-actions">
-                            <button class="content__left-btn">
+                        <div class="display__left-actions">
+                            <button class="display__left-btn">
                                 <i class="fa-solid fa-download"></i>
                                 Download
                             </button>
-                            <button class="content__left-btn">
+                            <button class="display__left-btn">
                                 <i class="fa-solid fa-heart-circle-plus"></i>
                                 Favorite
                             </button>
                         </div>
                     </div>
 
-                    <div class="content__right">
-                        <div class="content__right-heading">
+                    <div class="display__right">
+                        <div class="display__right-heading">
                             <i class="fa-solid fa-clock-rotate-left"></i>
                             Recent Tracks
                         </div>
 
-                        <div class="content__right-content">
-                            <ul class="content__history">
-                                <li class="content__item">
+                        <div class="display__right-content">
+                            <ul class="display__history">
+                                <li class="display__item">
                                     <h3>Telecommunication</h3>
                                     <p><span>From:</span>A Flock Of Seagulls</p>
                                     <p><span>By:</span>A Flock Of Seagulls</p>
                                 </li>
-                                <li class="content__item">
+                                <li class="display__item">
                                     <h3>Telecommunication</h3>
                                     <p><span>From:</span>A Flock Of Seagulls</p>
                                     <p><span>By:</span>A Flock Of Seagulls</p>
                                 </li>
-                                <li class="content__item">
+                                <li class="display__item">
                                     <h3>Telecommunication</h3>
                                     <p><span>From:</span>A Flock Of Seagulls</p>
                                     <p><span>By:</span>A Flock Of Seagulls</p>
@@ -180,10 +203,12 @@
                         </div>
                     </div>
 
-                    <div class="footer__logo">
+                    <div class="footer__actions">
+                        <div class="footer__user">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
                         <a href="https://github.com/ThinhLe1208/music_player.git"><i
-                                class="fa-brands fa-github"></i></a>
-
+                                class="footer__github-icon fa-brands fa-github"></i></a>
                     </div>
 
                 </footer>
