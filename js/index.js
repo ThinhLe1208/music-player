@@ -6,6 +6,7 @@ const $$ = document.querySelectorAll.bind(document);
 const audio = $('#audio');
 const progress = $('#progress');
 const listOfSongs = $('.header__list-songs');
+const recentTracks = $('.display__history');
 
 // DOM element Display Left
 const displaySongImg = $('.display__song-img');
@@ -32,67 +33,87 @@ const app = {
     // Data
     songs: [
         {
-            name: "We Don't Talk Anymore",
-            singer: "Charlie Puth",
+            name: "we dont talk anymore",
+            artist: "charlie puth",
+            info: "Lorem ipsum dolor sit amet",
             path: "./music/Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3",
-            image: "./image/g2.jpg"
+            image: "./image/charlieputh_singer.jpg",
+            cover: "./image/wedonttalkanymore.jpg"
         },
         {
-            name: "Perfect",
-            singer: "Ed Sheeran",
+            name: "perfect",
+            artist: "ed sheeran",
+            info: "Aenean ac ligula sit amet elit cursus venenatis",
             path: "./music/Ed Sheeran - Perfect.mp3",
-            image: "./image/g4.jpg"
+            image: "./image/edsheeran_singer.jpg",
+            cover: "./image/perfect.jpg"
         },
         {
-            name: "Night Changes",
-            singer: "One Direction",
+            name: "night changes",
+            artist: "One Direction",
+            info: "Vivamus elementum sapien",
             path: "./music/One Direction - Night Changes.mp3",
-            image: "./image/g6.jpg"
+            image: "./image/onedirection_singer.jpg",
+            cover: "./image/nightchanges.jpg"
         },
         {
-            name: "We Don't Talk Anymore",
-            singer: "Charlie Puth",
-            path: "./music/Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3",
-            image: "./image/g2.jpg"
+            name: "buoc qua mua co don",
+            artist: "vu",
+            info: "Nulla fringilla tortor non augue condimentum",
+            path: "./music/BƯỚC QUA MÙA CÔ ĐƠN  Vũ Official MV.mp3",
+            image: "./image/vu_singer.jpg",
+            cover: "./image/buocquamuacodon.jpg"
         },
         {
-            name: "Perfect",
-            singer: "Ed Sheeran",
-            path: "./music/Ed Sheeran - Perfect.mp3",
-            image: "./image/g4.jpg"
+            name: "duong toi cho em ve",
+            artist: "bui truong linh",
+            info: "Aenean ac ligula sit amet elit cursus",
+            path: "./music/Đường Tôi Chở Em Về  buitruonglinh  Lyrics Video.mp3",
+            image: "./image/buitruonglinh_singer.jpg",
+            cover: "./image/duongtoichoemve.jpg"
         },
         {
-            name: "Night Changes",
-            singer: "One Direction",
-            path: "./music/One Direction - Night Changes.mp3",
-            image: "./image/g6.jpg"
+            name: "lieu gio",
+            artist: "c m 1 x",
+            info: "Quisque bibendum eros id tellus euismod laoreet",
+            path: "./music/LIỆU GIỜ CM1X REMIX  2T  VENN.mp3",
+            image: "./image/cm1x_singer.jpg",
+            cover: "./image/lieugio.jpg"
         },
         {
-            name: "We Don't Talk Anymore",
-            singer: "Charlie Puth",
-            path: "./music/Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3",
-            image: "./image/g2.jpg"
+            name: "mai khong phai la anh",
+            artist: "thanh binh",
+            info: "In molestie consectetur nunc ut scelerisque",
+            path: "./music/Mãi Mãi Không Phải Anh  Thanh Bình  Official Audio.mp3",
+            image: "./image/thanhbinh_singer.jpg",
+            cover: "./image/maikhongphailaanh.jpg"
         },
         {
-            name: "Perfect",
-            singer: "Ed Sheeran",
-            path: "./music/Ed Sheeran - Perfect.mp3",
-            image: "./image/g4.jpg"
+            name: "muon noi voi em",
+            artist: "c m 1 x",
+            info: "Integer efficitur sodales sagittis",
+            path: "./music/MUỐN NÓI VỚI EM CM1X Lofi Ver  TTeam.mp3",
+            image: "./image/cm1x_singer.jpg",
+            cover: "./image/muonnoivoiem.jpg"
         },
         {
-            name: "Night Changes",
-            singer: "One Direction",
-            path: "./music/One Direction - Night Changes.mp3",
-            image: "./image/g6.jpg"
-        }
+            name: "vi anh dau co biet",
+            artist: "vu",
+            info: "Aenean in tristique sapien, eget venenatis enim",
+            path: "./music/Vì Anh Đâu Có Biết  Madihu Feat Vũ  Official MV.mp3",
+            image: "./image/vu_singer.jpg",
+            cover: "./image/vianhdaucobiet.jpg"
+        },
     ],
+
+    recentSongs: [],
 
     // Render
     renderTitlePlayer: function () {
         displaySongImg.src = this.currentSong.image;
-        displaySongName.innerHTML = this.currentSong.name;
-        displayArtistName.innerHTML = this.currentSong.singer;
-        displayCoverImg.src = this.currentSong.image;
+        displaySongName.innerHTML = this.stringCase(this.currentSong.name);
+        displayArtistName.innerHTML = this.stringCase(this.currentSong.artist);
+        displayCoverImg.src = this.currentSong.cover;
     },
 
     renderListSong: function () {
@@ -103,19 +124,33 @@ const app = {
             <img class="header__song-img" src="${song.image}" alt="song-img">
             <div class="header__song-content">
                 <div class="header__song-heading">
-                    <h3>${song.name}</h3>
+                    <h3>${this.stringCase(song.name)}</h3>
                     <div class="header__listening">
                         <i class="fa-solid fa-headphones"></i>
                         <span class="header__listening-count">166</span>
                     </div>
                 </div>
-                <p><span>Singer:</span>${song.singer}</p>
+                <p><span>Artist:</span>${this.stringCase(song.artist)}</p>
             </div>
         </li>
         `;
         });
 
         listOfSongs.innerHTML = stringHtml.join('');
+    },
+
+    renderRecentTracks: function () {
+        const stringHtml = this.recentSongs.map((song, index) => {
+            return `
+        <li class="display__item">
+            <h3>${this.stringCase(song.name)}</h3>
+            <p><span>Artist:</span>${this.stringCase(song.artist)}</p>
+            <p><span>Info:</span>${song.info}</p>
+        </li>
+        `;
+        });
+
+        recentTracks.innerHTML = stringHtml.join('');
     },
 
     renderButtons: function () {
@@ -164,6 +199,8 @@ const app = {
 
         // Handle when click next button
         nextBtn.onclick = function () {
+            _this.addToRecentSongs();
+
             if (_this.isShuffle) {
                 _this.randomSong();
             } else {
@@ -175,6 +212,8 @@ const app = {
 
         // Handle when click pre button
         preBtn.onclick = function () {
+            _this.addToRecentSongs();
+
             if (_this.isShuffle) {
                 _this.randomSong();
             } else {
@@ -226,9 +265,10 @@ const app = {
             const songNode = e.target.closest('.header__song');
 
             if (songNode) {
+                _this.addToRecentSongs();
                 _this.currentIndex = songNode.getAttribute('data-index');
-
                 _this.loadCurrentSong();
+
                 audio.play();
             }
         };
@@ -268,6 +308,23 @@ const app = {
         this.loadCurrentSong();
     },
 
+    addToRecentSongs: function () {
+        this.recentSongs.push(this.currentSong);
+        if (this.recentSongs.length > 3) {
+            this.recentSongs.shift();
+        }
+        this.renderRecentTracks();
+    },
+
+    stringCase: function (str) {
+        const convertToArray = str.toLowerCase().split(' ');
+        const result = convertToArray.map(function (val) {
+            return val.replace(val.charAt(0), val.charAt(0).toUpperCase());
+        });
+
+        return result.join(' ');
+    },
+
     start: function () {
         // Define properties
         this.defineProperties();
@@ -281,6 +338,7 @@ const app = {
         // Render
         this.renderTitlePlayer();
         this.renderListSong();
+        this.renderRecentTracks();
         this.renderButtons();
     }
 };
