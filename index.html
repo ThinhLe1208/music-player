@@ -29,6 +29,37 @@
     <audio id="audio" src="./music/Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3"
         preload="metadata"></audio>
 
+    <!-- Toast -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+        <div id="success-toast" class="toast custom-toast success" role="alert" data-bs-delay="4000"
+            aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="" data-bs-dismiss="toast" aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="toast-body">
+                <i class="fa-solid fa-circle-check"></i>
+                Success !
+            </div>
+        </div>
+
+        <div id="fail-toast" class="toast custom-toast fail" role="alert" data-bs-delay="4000" aria-live="assertive"
+            aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="" data-bs-dismiss="toast">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="toast-body">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Oh No ! Something went wrong
+            </div>
+        </div>
+    </div>
+
     <div class="app-wrapper" id="app">
 
         <div class="player-wrapper container">
@@ -195,7 +226,7 @@
 
                     <div class="footer__actions">
 
-                        <di class="footer__modal">
+                        <div class="footer__modal">
                             <div class="modal fade" id="user-modal" aria-hidden="true"
                                 aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-centered">
@@ -210,15 +241,17 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="mb-5">
-                                                <input type="text" class="form-control" placeholder="Username">
+                                                <input type="text" class="form-control" id="user-sign-in"
+                                                    placeholder="Username" spellcheck="false">
                                             </div>
                                             <div class="mb-1">
-                                                <input type="text" class="form-control" placeholder="Password">
+                                                <input type="password" class="form-control" id="pass-sign-in"
+                                                    placeholder="Password" spellcheck="false">
                                             </div>
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="custom-btn">Sign In</button>
+                                            <button class="custom-btn" id="sign-in">Sign In</button>
                                             <button class="custom-btn" data-bs-target="#exampleModalToggle2"
                                                 data-bs-toggle="modal">or Create Account</button>
                                         </div>
@@ -241,14 +274,23 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="mb-5">
-                                                <input type="text" class="form-control" placeholder="Username">
+                                                <input type="text" class="form-control" id="user-sign-up"
+                                                    placeholder="Username" spellcheck="false">
                                             </div>
-                                            <div class="mb-1">
-                                                <input type="text" class="form-control" placeholder="Password">
+                                            <div class="mb-5">
+                                                <input type="password" class="form-control" id="pass-sign-up"
+                                                    placeholder="Password" spellcheck="false">
+                                            </div>
+                                            <div class="footer__term form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="check-sign-up">
+                                                <label class="form-check-label" for="check-sign-up">
+                                                    I agree with terms and conditions
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="custom-btn">Create Account</button>
+                                            <button class="custom-btn" id="create-acc">Create Account</button>
                                             <button class="custom-btn" data-bs-target="#user-modal"
                                                 data-bs-toggle="modal">or Sign In</button>
                                         </div>
@@ -260,8 +302,29 @@
                             <button class="footer__user-btn" data-bs-target="#user-modal" data-bs-toggle="modal">
                                 <i class="fa-solid fa-user-gear"></i>
                             </button>
-                        </di>
+                        </div>
 
+                        <div class="footer__user dropdown">
+                            <span id="user-name">Thinh</span>
+                            <img src="./image/user_avatar.png" alt="user-avatar" class="dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+
+                            <ul class="footer__sort-list dropdown-menu">
+                                <li><a class="footer__sort-item dropdown-item" href="#">
+                                        <i class="fa-solid fa-heart-circle-check"></i>
+                                        Favorites List
+                                    </a></li>
+                                <li><a class="footer__sort-item dropdown-item" href="#">
+                                        <i class="fa-regular fa-user"></i>
+                                        Change Profile
+                                    </a></li>
+                                <li><a class="footer__sign-out-btn footer__sort-item dropdown-item" href="#">
+                                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                        Sign Out
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
 
                         <a href="https://github.com/ThinhLe1208/music_player.git"><i
                                 class="footer__github-icon fa-brands fa-github"></i></a>

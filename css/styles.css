@@ -135,6 +135,45 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 999px;
 }
 
+/* Toasts */
+.custom-toast {
+  color: white;
+  box-shadow: 0 1px 30px rgb(0 0 0 / 80%);
+}
+
+.custom-toast .toast-header {
+  display: flex;
+  align-items: baseline;
+  background-color: #222336;
+  border-bottom: none;
+}
+
+.custom-toast .toast-header strong {
+  color: var(--sub-text);
+}
+
+.custom-toast .toast-header button {
+  color: var(--sub-text);
+  background-color: transparent;
+}
+
+.custom-toast .toast-body {
+  color: var(--white);
+  background-color: #1c1d2c;
+}
+
+.custom-toast .toast-body i {
+  margin-right: var(--margin-right-icon);
+}
+
+.custom-toast.success .toast-body {
+  color: #03a55a;
+}
+
+.custom-toast.fail .toast-body {
+  color: #dc3055;
+}
+
 /* ============= App ================= */
 
 .app-wrapper {
@@ -724,12 +763,13 @@ input[type="range"]::-webkit-slider-thumb {
 
 .footer__actions .modal-body {
   background-color: #1c1d2c;
-  padding: 44px 0;
+  padding: 44px 44px;
 }
 
-.footer__actions .modal-body div {
-  width: 80%;
-  margin: auto;
+.footer__actions .modal-body input {
+  font-size: 20px;
+  font-weight: 700;
+  caret-color: var(--primary);
 }
 
 .footer__actions .modal-body input::placeholder {
@@ -737,7 +777,63 @@ input[type="range"]::-webkit-slider-thumb {
   font-weight: 700;
 }
 
+.footer__actions .modal-body .footer__term {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  color: var(--sub-text);
+  padding: 0;
+  margin: 0;
+}
+
+.footer__actions .modal-body .footer__term input {
+  float: none;
+  margin: 0 8px 0;
+}
+
 .footer__actions .modal-footer {
   justify-content: space-between;
   border-top: 1px solid rgb(0 0 0 / 30%);
+}
+
+.footer__user {
+  display: flex;
+  align-items: end;
+}
+
+.footer__user span {
+  font-size: 17px;
+  color: var(--secondary);
+  margin-right: var(--margin-right-icon);
+}
+
+.footer__user img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #f5f5f5;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
+  object-fit: cover;
+  padding: 0;
+  cursor: pointer;
+}
+
+.footer__user .footer__sort-list {
+  background-color: #2e2f49;
+  border-radius: 6px;
+  box-shadow: 0 1px 20px rgb(0 0 0 / 60%);
+}
+
+.footer__user .footer__sort-item {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.footer__user .footer__sort-item i {
+  margin-right: 4px;
+}
+
+.footer__user .footer__sort-item:hover {
+  background-color: #1e1f3033;
 }

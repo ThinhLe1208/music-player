@@ -24,6 +24,7 @@ const shuffleBtn = $('#shuffle');
 // DOM element Footer
 const progress = $('#progress');
 const userIcon = $('.footer__user');
+const userIconBtn = $('.footer__user-btn');
 const footerModal = $('.footer__modal');
 const volumeProgress = $('.footer__volume');
 const volumeNum = $('.footer__volume-num');
@@ -34,10 +35,28 @@ const durationTime = $('.footer__duration-time');
 const searchInput = $('.header_search-input');
 const listOfSongs = $('.header__list-songs');
 
+// DOM element Modal User
+const userSignUp = $('#user-sign-up');
+const passSignUp = $('#pass-sign-up');
+const checkSignUp = $('#check-sign-up');
+const createAccBtn = $('#create-acc');
+const userSignIn = $('#user-sign-in');
+const passSignIn = $('#pass-sign-in');
+const signInBtn = $('#sign-in');
+const userName = $('#user-name');
+
+// DOM element User Menu
+const signOutBtn = $('.footer__sign-out-btn');
+
+// DOM element Toasts
+const successToast = $('#success-toast');
+const failToast = $('#fail-toast');
+
 const app = {
 
     // State
     currentIndex: 0,
+    currentUser: null,
     isPlaying: false,
     isRepeat: false,
     isShuffle: false,
@@ -130,6 +149,7 @@ const app = {
 
     searchSongs: [],
     recentSongs: [],
+    listUsers: [],
 
     // Render
     renderTitlePlayer: function () {
@@ -194,6 +214,17 @@ const app = {
             shuffleBtn.style.opacity = '0.3';
     },
 
+    renderUser: function () {
+        if (this.currentUser) {
+            userName.innerHTML = this.currentUser.user;
+            userIcon.style.display = 'flex';
+            userIconBtn.style.display = 'none';
+        } else {
+            userIcon.style.display = 'none';
+            userIconBtn.style.display = 'block';
+        }
+    },
+
     // Define properties
     defineProperties: function () {
         Object.defineProperty(this, 'currentSong', {
@@ -201,6 +232,12 @@ const app = {
                 return this.songs[this.currentIndex];
             }
         });
+    },
+
+    // User Constructor
+    User: function (user, pass) {
+        this.user = user;
+        this.pass = pass;
     },
 
     // Handle DOM events
@@ -275,16 +312,6 @@ const app = {
             _this.renderButtons();
         };
 
-        // Handle when click user icon button
-        footerModal.onclick = function () {
-            const dom = $('body > .modal-backdrop.fade.show');
-
-            if (dom) {
-                dom.style.position = 'absolute';
-                player.appendChild(dom);
-            }
-        };
-
         // ===================== Progress bar =======================
 
         // Handle when change song progress
@@ -344,9 +371,67 @@ const app = {
                 audio.play();
             }
         };
+
+        // ===================== Modal User =======================
+
+        // Handle when click user icon button
+        footerModal.onclick = function () {
+            const dom = $('body > .modal-backdrop.fade.show');
+
+            if (dom) {
+                dom.style.position = 'absolute';
+                player.appendChild(dom);
+            }
+        };
+
+        // Handle when click Create account
+        createAccBtn.onclick = function () {
+            let isValid = checkSignUp.checked && userSignUp.value.trim() !== '' && passSignUp.value.trim() !== '';
+
+            if (isValid) {
+                const user = new _this.User(userSignUp.value, passSignUp.value);
+
+                _this.listUsers.push(user);
+                _this.showToast(true);
+                _this.resetForm(footerModal);
+
+                console.log(_this.listUsers);
+            } else {
+                _this.showToast(false);
+            }
+        };
+
+        // Handle when click Sign In 
+        signInBtn.onclick = function () {
+            const user = _this.listUsers.find(function (user) {
+                return user.user === userSignIn.value && user.pass === passSignIn.value;
+            });
+
+            if (user) {
+                _this.currentUser = user;
+                _this.renderUser();
+                _this.showToast(true);
+                _this.resetForm(footerModal);
+            } else {
+                _this.showToast(false);
+            }
+        };
+
+        // ===================== User Menu =======================
+
+        // Handle when click User profile
+        userIcon.onclick = function () {
+
+        };
+
+        // Handle when click Sign out button
+        signOutBtn.onclick = function () {
+            _this.currentUser = null;
+            _this.renderUser();
+        };
     },
 
-    // Utilities
+    // ===================== Utilities =======================
     loadCurrentSong: function () {
         audio.src = this.currentSong.path;
         this.renderTitlePlayer();
@@ -397,6 +482,37 @@ const app = {
         const minNum = min < 10 ? `0${min}` : `${min}`;
 
         return `${minNum}:${secNum}`;
+    },
+
+    showToast: function (type) {
+        let toast;
+
+        switch (type) {
+            case true:
+                toast = new bootstrap.Toast(successToast);
+                break;
+            case false:
+                toast = new bootstrap.Toast(failToast);
+                break;
+        }
+
+        toast.show();
+    },
+
+    resetForm: function (form) {
+        const inputList = form.querySelectorAll('input');
+        const clostBtn = form.querySelector('.modal.show').querySelector('button');
+
+        inputList.forEach(function (input) {
+            if (input.matches('[type=checkbox]')) {
+                input.checked = false;
+            } else {
+                input.value = '';
+            }
+            ;
+        });
+
+        clostBtn.click();
     },
 
     // Uppercase string
@@ -453,8 +569,8 @@ const app = {
         this.renderListSong(this.songs);
         this.renderRecentTracks();
         this.renderButtons();
+        this.renderUser();
     }
 };
 
 app.start();
-;
