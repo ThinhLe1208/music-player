@@ -3,9 +3,8 @@ const $$ = document.querySelectorAll.bind(document);
 // =====================  =======================
 
 // DOM element base
+const player = $('.player');
 const audio = $('#audio');
-const progress = $('#progress');
-const listOfSongs = $('.header__list-songs');
 const recentTracks = $('.display__history');
 
 // DOM element Display Left
@@ -13,6 +12,7 @@ const displaySongImg = $('.display__song-img');
 const displaySongName = $('.display__song-name');
 const displayArtistName = $('.display__artist-name');
 const displayCoverImg = $('.display__cover-img');
+const displayListening = $('.display__listening-count');
 
 // DOM element Controller Buttons
 const playBtn = $('#play');
@@ -20,6 +20,19 @@ const preBtn = $('#pre');
 const nextBtn = $('#next');
 const repeatBtn = $('#repeat');
 const shuffleBtn = $('#shuffle');
+
+// DOM element Footer
+const progress = $('#progress');
+const userIcon = $('.footer__user');
+const footerModal = $('.footer__modal');
+const volumeProgress = $('.footer__volume');
+const volumeNum = $('.footer__volume-num');
+const currentTime = $('.footer__current-time');
+const durationTime = $('.footer__duration-time');
+
+// DOM element Sidebar
+const searchInput = $('.header_search-input');
+const listOfSongs = $('.header__list-songs');
 
 const app = {
 
@@ -38,7 +51,8 @@ const app = {
             info: "Lorem ipsum dolor sit amet",
             path: "./music/Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3",
             image: "./image/charlieputh_singer.jpg",
-            cover: "./image/wedonttalkanymore.jpg"
+            cover: "./image/wedonttalkanymore.jpg",
+            listening: 155
         },
         {
             name: "perfect",
@@ -46,7 +60,8 @@ const app = {
             info: "Aenean ac ligula sit amet elit cursus venenatis",
             path: "./music/Ed Sheeran - Perfect.mp3",
             image: "./image/edsheeran_singer.jpg",
-            cover: "./image/perfect.jpg"
+            cover: "./image/perfect.jpg",
+            listening: 241
         },
         {
             name: "night changes",
@@ -54,7 +69,8 @@ const app = {
             info: "Vivamus elementum sapien",
             path: "./music/One Direction - Night Changes.mp3",
             image: "./image/onedirection_singer.jpg",
-            cover: "./image/nightchanges.jpg"
+            cover: "./image/nightchanges.jpg",
+            listening: 379
         },
         {
             name: "buoc qua mua co don",
@@ -62,7 +78,8 @@ const app = {
             info: "Nulla fringilla tortor non augue condimentum",
             path: "./music/BƯỚC QUA MÙA CÔ ĐƠN  Vũ Official MV.mp3",
             image: "./image/vu_singer.jpg",
-            cover: "./image/buocquamuacodon.jpg"
+            cover: "./image/buocquamuacodon.jpg",
+            listening: 459
         },
         {
             name: "duong toi cho em ve",
@@ -70,7 +87,8 @@ const app = {
             info: "Aenean ac ligula sit amet elit cursus",
             path: "./music/Đường Tôi Chở Em Về  buitruonglinh  Lyrics Video.mp3",
             image: "./image/buitruonglinh_singer.jpg",
-            cover: "./image/duongtoichoemve.jpg"
+            cover: "./image/duongtoichoemve.jpg",
+            listening: 649
         },
         {
             name: "lieu gio",
@@ -78,7 +96,8 @@ const app = {
             info: "Quisque bibendum eros id tellus euismod laoreet",
             path: "./music/LIỆU GIỜ CM1X REMIX  2T  VENN.mp3",
             image: "./image/cm1x_singer.jpg",
-            cover: "./image/lieugio.jpg"
+            cover: "./image/lieugio.jpg",
+            listening: 354
         },
         {
             name: "mai khong phai la anh",
@@ -86,7 +105,8 @@ const app = {
             info: "In molestie consectetur nunc ut scelerisque",
             path: "./music/Mãi Mãi Không Phải Anh  Thanh Bình  Official Audio.mp3",
             image: "./image/thanhbinh_singer.jpg",
-            cover: "./image/maikhongphailaanh.jpg"
+            cover: "./image/maikhongphailaanh.jpg",
+            listening: 571
         },
         {
             name: "muon noi voi em",
@@ -94,7 +114,8 @@ const app = {
             info: "Integer efficitur sodales sagittis",
             path: "./music/MUỐN NÓI VỚI EM CM1X Lofi Ver  TTeam.mp3",
             image: "./image/cm1x_singer.jpg",
-            cover: "./image/muonnoivoiem.jpg"
+            cover: "./image/muonnoivoiem.jpg",
+            listening: 842
         },
         {
             name: "vi anh dau co biet",
@@ -102,10 +123,12 @@ const app = {
             info: "Aenean in tristique sapien, eget venenatis enim",
             path: "./music/Vì Anh Đâu Có Biết  Madihu Feat Vũ  Official MV.mp3",
             image: "./image/vu_singer.jpg",
-            cover: "./image/vianhdaucobiet.jpg"
+            cover: "./image/vianhdaucobiet.jpg",
+            listening: 625
         },
     ],
 
+    searchSongs: [],
     recentSongs: [],
 
     // Render
@@ -114,11 +137,19 @@ const app = {
         displaySongName.innerHTML = this.stringCase(this.currentSong.name);
         displayArtistName.innerHTML = this.stringCase(this.currentSong.artist);
         displayCoverImg.src = this.currentSong.cover;
+        displayListening.innerHTML = this.currentSong.listening;
+
+        // Reset current time and duration time
+        currentTime.innerHTML = '00:00';
+        if (audio.duration) {
+            durationTime.innerHTML = this.showCurrentTime(audio.duration);
+        }
+
     },
 
-    renderListSong: function () {
+    renderListSong: function (list) {
 
-        const stringHtml = this.songs.map((song, index) => {
+        const stringHtml = list.map((song, index) => {
             return `
         <li class="header__song ${index == this.currentIndex ? "active" : ""}" data-index="${index}">
             <img class="header__song-img" src="${song.image}" alt="song-img">
@@ -127,7 +158,7 @@ const app = {
                     <h3>${this.stringCase(song.name)}</h3>
                     <div class="header__listening">
                         <i class="fa-solid fa-headphones"></i>
-                        <span class="header__listening-count">166</span>
+                        <span class="header__listening-count">${song.listening}</span>
                     </div>
                 </div>
                 <p><span>Artist:</span>${this.stringCase(song.artist)}</p>
@@ -163,6 +194,7 @@ const app = {
             shuffleBtn.style.opacity = '0.3';
     },
 
+    // Define properties
     defineProperties: function () {
         Object.defineProperty(this, 'currentSong', {
             get: function () {
@@ -171,8 +203,16 @@ const app = {
         });
     },
 
+    // Handle DOM events
     handleEvents: function () {
         const _this = this;
+
+        // ===================== Audio =======================
+
+        // Handle when audio preload
+        audio.onloadedmetadata = function () {
+            _this.renderTitlePlayer();
+        };
 
         // ===================== Buttons =======================
 
@@ -185,13 +225,13 @@ const app = {
             }
         };
 
-        // Handle when song is playing
+        // Handle when play song
         audio.onplay = function () {
             _this.isPlaying = true;
             playBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
         };
 
-        // Handle when song is paused
+        // Handle when pause song
         audio.onpause = function () {
             _this.isPlaying = false;
             playBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
@@ -235,17 +275,31 @@ const app = {
             _this.renderButtons();
         };
 
+        // Handle when click user icon button
+        footerModal.onclick = function () {
+            const dom = $('body > .modal-backdrop.fade.show');
+
+            if (dom) {
+                dom.style.position = 'absolute';
+                player.appendChild(dom);
+            }
+        };
+
         // ===================== Progress bar =======================
 
-        // Handle when change progress
+        // Handle when change song progress
         progress.oninput = function () {
             audio.currentTime = progress.value * audio.duration / 100;
         };
 
-        // Handle progress is changed when audio is playing
+        // Handle when song is playing
         audio.ontimeupdate = function () {
             if (audio.duration) {
+                // change song progress
                 progress.value = audio.currentTime / audio.duration * 100;
+
+                // change current time display
+                currentTime.innerHTML = _this.showCurrentTime(audio.currentTime);
             }
         };
 
@@ -258,7 +312,25 @@ const app = {
             }
         };
 
-        // ===================== List of Songs =======================
+        // Handle when change volume progress
+        volumeProgress.oninput = function () {
+            audio.volume = volumeProgress.value / 100;
+            volumeNum.innerHTML = volumeProgress.value;
+        };
+
+        // ===================== Sidebar =======================
+
+        // Handle search song from list
+        searchInput.oninput = function () {
+            const input = _this.toSlug(searchInput.value);
+
+            _this.searchSongs = _this.songs.filter(function (song) {
+                if (_this.toSlug(song.name).search(input) !== -1 || _this.toSlug(song.artist).search(input) !== -1)
+                    return song;
+            });
+
+            _this.renderListSong(_this.searchSongs);
+        };
 
         // Handle choose song from list
         listOfSongs.onclick = function (e) {
@@ -274,10 +346,11 @@ const app = {
         };
     },
 
+    // Utilities
     loadCurrentSong: function () {
-        this.renderTitlePlayer();
-        this.renderListSong();
         audio.src = this.currentSong.path;
+        this.renderTitlePlayer();
+        this.renderListSong(this.songs);
     },
 
     nextSong: function () {
@@ -316,6 +389,17 @@ const app = {
         this.renderRecentTracks();
     },
 
+    showCurrentTime: function (time) {
+        const sec = Math.floor(time % 60);
+        const min = Math.floor(time / 60);
+
+        const secNum = sec < 10 ? `0${sec}` : `${sec}`;
+        const minNum = min < 10 ? `0${min}` : `${min}`;
+
+        return `${minNum}:${secNum}`;
+    },
+
+    // Uppercase string
     stringCase: function (str) {
         const convertToArray = str.toLowerCase().split(' ');
         const result = convertToArray.map(function (val) {
@@ -323,6 +407,35 @@ const app = {
         });
 
         return result.join(' ');
+    },
+
+    toSlug: function (string) {
+        //Đổi chữ hoa thành chữ thường
+        slug = string.toLowerCase();
+
+        //Đổi ký tự có dấu thành không dấu
+        slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
+        slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');
+        slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i');
+        slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o');
+        slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
+        slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
+        slug = slug.replace(/đ/gi, 'd');
+        //Xóa các ký tự đặt biệt
+        slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
+        //Đổi khoảng trắng thành ký tự gạch ngang
+        slug = slug.replace(/ /gi, "-");
+        //Đổi nhiều ký tự gạch ngang liên tiếp thành 1 ký tự gạch ngang
+        //Phòng trường hợp người nhập vào quá nhiều ký tự trắng
+        slug = slug.replace(/\-\-\-\-\-/gi, '-');
+        slug = slug.replace(/\-\-\-\-/gi, '-');
+        slug = slug.replace(/\-\-\-/gi, '-');
+        slug = slug.replace(/\-\-/gi, '-');
+        //Xóa các ký tự gạch ngang ở đầu và cuối
+        slug = '@' + slug + '@';
+        slug = slug.replace(/\@\-|\-\@|\@/gi, '');
+
+        return slug;
     },
 
     start: function () {
@@ -337,10 +450,11 @@ const app = {
 
         // Render
         this.renderTitlePlayer();
-        this.renderListSong();
+        this.renderListSong(this.songs);
         this.renderRecentTracks();
         this.renderButtons();
     }
 };
 
 app.start();
+;

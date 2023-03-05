@@ -26,7 +26,8 @@
 </head>
 
 <body>
-    <audio id="audio" src="./music/Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3"></audio>
+    <audio id="audio" src="./music/Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3"
+        preload="metadata"></audio>
 
     <div class="app-wrapper" id="app">
 
@@ -53,7 +54,7 @@
                     <div class="header_sidebar offcanvas offcanvas-end" tabindex="-1" id="sidebar">
                         <div class="header__sidebar-heading">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" placeholder="Search ..." spellcheck="false">
+                            <input class="header_search-input" type="text" placeholder="Search ..." spellcheck="false">
                             <i class="fa-solid fa-xmark" data-bs-dismiss="offcanvas"></i>
                         </div>
 
@@ -130,11 +131,11 @@
                         </div>
 
                         <div class="display__left-actions">
-                            <button class="display__left-btn">
+                            <button class="custom-btn">
                                 <i class="fa-solid fa-download"></i>
                                 Download
                             </button>
-                            <button class="display__left-btn">
+                            <button class="custom-btn">
                                 <i class="fa-solid fa-heart-circle-plus"></i>
                                 Favorite
                             </button>
@@ -159,9 +160,10 @@
                 <!-- Player footer -->
                 <footer class="footer">
 
-                    <div class="footer__volumn">
+                    <div class="footer__left">
                         <i class="fa-solid fa-volume-high"></i>
-                        <input type="range" value="0" step="1" min="0" max="100">
+                        <input class="footer__volume" type="range" value="100" step="1" min="0" max="100">
+                        <span class="footer__volume-num">100</span>
                     </div>
 
                     <div class="footer__controller">
@@ -185,14 +187,82 @@
                         </div>
 
                         <div class="footer__progress">
+                            <span class="footer__current-time">00:00</span>
                             <input id="progress" type="range" value="0" step="1" min="0" max="100">
+                            <span class="footer__duration-time">04:30</span>
                         </div>
                     </div>
 
                     <div class="footer__actions">
-                        <div class="footer__user">
-                            <i class="fa-solid fa-user-gear"></i>
-                        </div>
+
+                        <di class="footer__modal">
+                            <div class="modal fade" id="user-modal" aria-hidden="true"
+                                aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h1 class="modal-title" id="exampleModalToggleLabel">Sign In</h1>
+                                            <button type="button" class="custom-btn" data-bs-dismiss="modal"
+                                                aria-label="Close">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-5">
+                                                <input type="text" class="form-control" placeholder="Username">
+                                            </div>
+                                            <div class="mb-1">
+                                                <input type="text" class="form-control" placeholder="Password">
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="custom-btn">Sign In</button>
+                                            <button class="custom-btn" data-bs-target="#exampleModalToggle2"
+                                                data-bs-toggle="modal">or Create Account</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="exampleModalToggle2" aria-hidden="true"
+                                aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h1 class="modal-title" id="exampleModalToggleLabel2">Sign Up</h1>
+                                            <button type="button" class="custom-btn" data-bs-dismiss="modal"
+                                                aria-label="Close">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-5">
+                                                <input type="text" class="form-control" placeholder="Username">
+                                            </div>
+                                            <div class="mb-1">
+                                                <input type="text" class="form-control" placeholder="Password">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="custom-btn">Create Account</button>
+                                            <button class="custom-btn" data-bs-target="#user-modal"
+                                                data-bs-toggle="modal">or Sign In</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="footer__user-btn" data-bs-target="#user-modal" data-bs-toggle="modal">
+                                <i class="fa-solid fa-user-gear"></i>
+                            </button>
+                        </di>
+
+
                         <a href="https://github.com/ThinhLe1208/music_player.git"><i
                                 class="footer__github-icon fa-brands fa-github"></i></a>
                     </div>
