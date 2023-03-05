@@ -11,8 +11,8 @@
 ## Cập nhật tương lai
 
 - Sắp xếp thứ tự bài hát trong danh sách
+- Quản lý tài khoản (xem danh sách yêu thích, thay đổi ảnh đại diện, ...)
 - Tạo danh sách bài hát yêu thích, thêm bớt bài hát trong danh sách
-- Tạo tài khoản, quả lý tài khoản (lưu trữ danh sách yêu thích, thay đổi ảnh đại diện, ...)
 
 ## Website
 
