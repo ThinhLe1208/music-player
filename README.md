@@ -7,6 +7,7 @@
 - Tìm kiếm bài hát trong danh sách
 - Cập nhật thông tin bài hát đang phát
 - Hiển thị lịch sử các bài hát phát gần nhất
+- Chức năng đăng ký, đăng nhập, đăng xuất
 
 ## Cập nhật tương lai
 

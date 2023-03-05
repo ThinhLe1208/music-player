@@ -159,7 +159,7 @@ const app = {
         displayCoverImg.src = this.currentSong.cover;
         displayListening.innerHTML = this.currentSong.listening;
 
-        // Reset current time and duration time
+        // Reset current time and time duration 
         currentTime.innerHTML = '00:00';
         if (audio.duration) {
             durationTime.innerHTML = this.showCurrentTime(audio.duration);
@@ -508,8 +508,7 @@ const app = {
                 input.checked = false;
             } else {
                 input.value = '';
-            }
-            ;
+            };
         });
 
         clostBtn.click();
