@@ -60,7 +60,7 @@ const app = {
     isPlaying: false,
     isRepeat: false,
     isShuffle: false,
-    interval: null,
+    idInterval: undefined,
 
     // Data
     songs: [
@@ -151,6 +151,31 @@ const app = {
     recentSongs: [],
     listUsers: [],
 
+    // Call API
+    apiSearchByKeyword: async function (keyword) {
+        const result = await axios({
+            url: 'http://localhost:5000/api/search',
+            method: 'GET',
+            params: {
+                keyword: keyword
+            }
+        });
+
+        return result.data.data.songs;
+    },
+
+    apiGetSongById: async function (id) {
+        const result = await axios({
+            url: 'http://localhost:5000/api/song',
+            method: 'GET',
+            params: {
+                id: id
+            }
+        });
+
+        return result.data.data[128];
+    },
+
     // Render
     renderTitlePlayer: function () {
         displaySongImg.src = this.currentSong.image;
@@ -182,6 +207,30 @@ const app = {
                     </div>
                 </div>
                 <p><span>Artist:</span>${this.stringCase(song.artist)}</p>
+            </div>
+        </li>
+        `;
+        });
+
+        listOfSongs.innerHTML = stringHtml.join('');
+    },
+
+    renderListSongByApi: function (list) {
+        console.log(list);
+
+        const stringHtml = list.map((song, index) => {
+            return `
+        <li class="header__song ${index == this.currentIndex ? "active" : ""}" data-index="${index}" data-id="${song.encodeId}">
+            <img class="header__song-img" src="${song.thumbnailM}" alt="song-img">
+            <div class="header__song-content">
+                <div class="header__song-heading">
+                    <h3>${this.stringCase(song.title)}</h3>
+                    <div class="header__listening">
+                        <i class="fa-solid fa-headphones"></i>
+                        <span class="header__listening-count">${song.duration}</span>
+                    </div>
+                </div>
+                <p><span>Artist:</span>${song.artistsNames}</p>
             </div>
         </li>
         `;
@@ -246,14 +295,14 @@ const app = {
 
         // ===================== Audio =======================
 
-        // Handle when audio preload
+        // Handle event when audio preload
         audio.onloadedmetadata = function () {
             _this.renderTitlePlayer();
         };
 
         // ===================== Buttons =======================
 
-        // Handle when click play/pause button
+        // Handle event when clicking play/pause button
         playBtn.onclick = function () {
             if (_this.isPlaying) {
                 audio.pause();
@@ -262,19 +311,19 @@ const app = {
             }
         };
 
-        // Handle when play song
+        // Handle event when playing song
         audio.onplay = function () {
             _this.isPlaying = true;
             playBtn.innerHTML = '<i class="fa-regular fa-circle-pause"></i>';
         };
 
-        // Handle when pause song
+        // Handle event when pausing song
         audio.onpause = function () {
             _this.isPlaying = false;
             playBtn.innerHTML = '<i class="fa-regular fa-circle-play"></i>';
         };
 
-        // Handle when click next button
+        // Handle event when clicking next button
         nextBtn.onclick = function () {
             _this.addToRecentSongs();
 
@@ -287,7 +336,7 @@ const app = {
             audio.play();
         };
 
-        // Handle when click pre button
+        // Handle event when clicking pre button
         preBtn.onclick = function () {
             _this.addToRecentSongs();
 
@@ -300,13 +349,13 @@ const app = {
             audio.play();
         };
 
-        // Handle when click repeat button 
+        // Handle event when clicking repeat button 
         repeatBtn.onclick = function () {
             _this.isRepeat = !_this.isRepeat;
             _this.renderButtons();
         };
 
-        // Handle when click shuffle button
+        // Handle event when clicking shuffle button
         shuffleBtn.onclick = function () {
             _this.isShuffle = !_this.isShuffle;
             _this.renderButtons();
@@ -314,12 +363,12 @@ const app = {
 
         // ===================== Progress bar =======================
 
-        // Handle when change song progress
+        // Handle event when changing song progress
         progress.oninput = function () {
             audio.currentTime = progress.value * audio.duration / 100;
         };
 
-        // Handle when song is playing
+        // Handle event when song is playing
         audio.ontimeupdate = function () {
             if (audio.duration) {
                 // change song progress
@@ -330,7 +379,7 @@ const app = {
             }
         };
 
-        // Handle when song end
+        // Handle event when song end
         audio.onended = function () {
             if (_this.isRepeat) {
                 audio.play();
@@ -339,7 +388,7 @@ const app = {
             }
         };
 
-        // Handle when change volume progress
+        // Handle event when changing volume progress
         volumeProgress.oninput = function () {
             audio.volume = volumeProgress.value / 100;
             volumeNum.innerHTML = volumeProgress.value;
@@ -347,34 +396,47 @@ const app = {
 
         // ===================== Sidebar =======================
 
-        // Handle search song from list
-        searchInput.oninput = function () {
-            const input = _this.toSlug(searchInput.value);
+        // Handle event when searching song from list
+        searchInput.oninput = async function () {
+            const keyword = searchInput.value;
+            const promise = new Promise(function (resolve) {
+                _this.idInterval && clearTimeout(_this.idInterval);
 
-            _this.searchSongs = _this.songs.filter(function (song) {
-                if (_this.toSlug(song.name).search(input) !== -1 || _this.toSlug(song.artist).search(input) !== -1)
-                    return song;
+                _this.idInterval = setTimeout(function () {
+                    resolve(keyword);
+                }, 2000);
             });
 
-            _this.renderListSong(_this.searchSongs);
+            promise
+                .then(function (keyword) {
+                    return _this.apiSearchByKeyword(keyword);
+                })
+                .then(function (listSong) {
+                    _this.renderListSongByApi(listSong);
+                });
         };
 
-        // Handle choose song from list
-        listOfSongs.onclick = function (e) {
+        // Handle event when choosing song from list
+        listOfSongs.onclick = async function (e) {
             const songNode = e.target.closest('.header__song');
 
             if (songNode) {
-                _this.addToRecentSongs();
-                _this.currentIndex = songNode.getAttribute('data-index');
-                _this.loadCurrentSong();
+                const songId = songNode.getAttribute('data-id');
+                const song = await _this.apiGetSongById(songId);
 
+                audio.src = song;
                 audio.play();
+
+                // _this.addToRecentSongs();
+                // _this.currentIndex = songNode.getAttribute('data-index');
+                // _this.loadCurrentSong();
+
             }
         };
 
         // ===================== Modal User =======================
 
-        // Handle when click user icon button
+        // Handle event when clicking user icon button
         footerModal.onclick = function () {
             const dom = $('body > .modal-backdrop.fade.show');
 
@@ -384,7 +446,7 @@ const app = {
             }
         };
 
-        // Handle when click Create account
+        // Handle event when clicking Create account button
         createAccBtn.onclick = function () {
             let isValid = checkSignUp.checked && userSignUp.value.trim() !== '' && passSignUp.value.trim() !== '';
 
@@ -401,7 +463,7 @@ const app = {
             }
         };
 
-        // Handle when click Sign In 
+        // Handle event when clicking Sign In button
         signInBtn.onclick = function () {
             const user = _this.listUsers.find(function (user) {
                 return user.user === userSignIn.value && user.pass === passSignIn.value;
@@ -419,12 +481,12 @@ const app = {
 
         // ===================== User Menu =======================
 
-        // Handle when click User profile
+        // Handle event when clicking User profile
         userIcon.onclick = function () {
 
         };
 
-        // Handle when click Sign out button
+        // Handle event when clicking Sign out button
         signOutBtn.onclick = function () {
             _this.currentUser = null;
             _this.renderUser();
