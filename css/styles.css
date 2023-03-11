@@ -305,6 +305,14 @@ input[type="range"]::-webkit-slider-thumb {
   background-color: #222336;
 }
 
+.header__sidebar-content .header__spinner {
+  display: none;
+  margin: auto;
+  background-color: var(--primary);
+  border: 1px solid transparent;
+  margin-top: 28px;
+}
+
 .header__list-songs {
   height: 100%;
   overflow-y: scroll;

@@ -33,6 +33,7 @@ const durationTime = $('.footer__duration-time');
 
 // DOM element Sidebar
 const searchInput = $('.header_search-input');
+const spinner = $('.header__spinner');
 const listOfSongs = $('.header__list-songs');
 
 // DOM element Modal User
@@ -56,6 +57,7 @@ const app = {
 
     // State
     currentIndex: 0,
+    currentId: 1,
     currentUser: null,
     isPlaying: false,
     isRepeat: false,
@@ -65,88 +67,107 @@ const app = {
     // Data
     songs: [
         {
-            name: "we dont talk anymore",
-            artist: "charlie puth",
-            info: "Lorem ipsum dolor sit amet",
+            encodeId: '1',
+            title: "We Dont Talk Anymore",
+            artistsNames: "Charlie Puth",
+            album: { title: "Lorem ipsum dolor sit amet" },
             path: "./music/Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3",
-            image: "./image/charlieputh_singer.jpg",
-            cover: "./image/wedonttalkanymore.jpg",
-            listening: 155
+            thumbnailM: "./image/charlieputh_singer.jpg",
+            thumbnail: "./image/wedonttalkanymore.jpg",
+            duration: 155
         },
         {
-            name: "perfect",
-            artist: "ed sheeran",
-            info: "Aenean ac ligula sit amet elit cursus venenatis",
+            encodeId: '2',
+            title: "Perfect",
+            artistsNames: "Ed Sheeran",
+            album: { title: "Aenean ac ligula sit amet elit cursus venenatis" },
             path: "./music/Ed Sheeran - Perfect.mp3",
-            image: "./image/edsheeran_singer.jpg",
-            cover: "./image/perfect.jpg",
-            listening: 241
+            thumbnailM: "./image/edsheeran_singer.jpg",
+            thumbnail: "./image/perfect.jpg",
+            duration: 241
         },
         {
-            name: "night changes",
-            artist: "One Direction",
-            info: "Vivamus elementum sapien",
+            encodeId: '3',
+            title: "Night Changes",
+            artistsNames: "One Direction",
+            album: { title: "Vivamus elementum sapien" },
             path: "./music/One Direction - Night Changes.mp3",
-            image: "./image/onedirection_singer.jpg",
-            cover: "./image/nightchanges.jpg",
-            listening: 379
+            thumbnailM: "./image/onedirection_singer.jpg",
+            thumbnail: "./image/nightchanges.jpg",
+            duration: 379
         },
         {
-            name: "buoc qua mua co don",
-            artist: "vu",
-            info: "Nulla fringilla tortor non augue condimentum",
+            encodeId: '4',
+            title: "Buoc Qua Mua Co Don",
+            artistsNames: "Vu",
+            album: { title: "Nulla fringilla tortor non augue condimentum" },
             path: "./music/BƯỚC QUA MÙA CÔ ĐƠN  Vũ Official MV.mp3",
-            image: "./image/vu_singer.jpg",
-            cover: "./image/buocquamuacodon.jpg",
-            listening: 459
+            thumbnailM: "./image/vu_singer.jpg",
+            thumbnail: "./image/buocquamuacodon.jpg",
+            duration: 459
         },
         {
-            name: "duong toi cho em ve",
-            artist: "bui truong linh",
-            info: "Aenean ac ligula sit amet elit cursus",
+            encodeId: '5',
+            title: "Duong Toi Cho Em Ve",
+            artistsNames: "Bui Truong Linh",
+            album: { title: "Aenean ac ligula sit amet elit cursus" },
             path: "./music/Đường Tôi Chở Em Về  buitruonglinh  Lyrics Video.mp3",
-            image: "./image/buitruonglinh_singer.jpg",
-            cover: "./image/duongtoichoemve.jpg",
-            listening: 649
+            thumbnailM: "./image/buitruonglinh_singer.jpg",
+            thumbnail: "./image/duongtoichoemve.jpg",
+            duration: 649
         },
         {
-            name: "lieu gio",
-            artist: "c m 1 x",
-            info: "Quisque bibendum eros id tellus euismod laoreet",
+            encodeId: '6',
+            title: "Lieu Gio",
+            artistsNames: "C M 1 X",
+            album: { title: "Quisque bibendum eros id tellus euismod laoreet" },
             path: "./music/LIỆU GIỜ CM1X REMIX  2T  VENN.mp3",
-            image: "./image/cm1x_singer.jpg",
-            cover: "./image/lieugio.jpg",
-            listening: 354
+            thumbnailM: "./image/cm1x_singer.jpg",
+            thumbnail: "./image/lieugio.jpg",
+            duration: 354
         },
         {
-            name: "mai khong phai la anh",
-            artist: "thanh binh",
-            info: "In molestie consectetur nunc ut scelerisque",
+            encodeId: '7',
+            title: "Mai Khong Phai La Anh",
+            artistsNames: "Thanh Binh",
+            album: { title: "In molestie consectetur nunc ut scelerisque" },
             path: "./music/Mãi Mãi Không Phải Anh  Thanh Bình  Official Audio.mp3",
-            image: "./image/thanhbinh_singer.jpg",
-            cover: "./image/maikhongphailaanh.jpg",
-            listening: 571
+            thumbnailM: "./image/thanhbinh_singer.jpg",
+            thumbnail: "./image/maikhongphailaanh.jpg",
+            duration: 571
         },
         {
-            name: "muon noi voi em",
-            artist: "c m 1 x",
-            info: "Integer efficitur sodales sagittis",
+            encodeId: '8',
+            title: "Muon Noi Voi Em",
+            artistsNames: "C M 1 X",
+            album: { title: "Integer efficitur sodales sagittis" },
             path: "./music/MUỐN NÓI VỚI EM CM1X Lofi Ver  TTeam.mp3",
-            image: "./image/cm1x_singer.jpg",
-            cover: "./image/muonnoivoiem.jpg",
-            listening: 842
+            thumbnailM: "./image/cm1x_singer.jpg",
+            thumbnail: "./image/muonnoivoiem.jpg",
+            duration: 842
         },
         {
-            name: "vi anh dau co biet",
-            artist: "vu",
-            info: "Aenean in tristique sapien, eget venenatis enim",
+            encodeId: '9',
+            title: "Vi Anh Dau Co Biet",
+            artistsNames: "Vu",
+            album: { title: "Aenean in tristique sapien, eget venenatis enim" },
             path: "./music/Vì Anh Đâu Có Biết  Madihu Feat Vũ  Official MV.mp3",
-            image: "./image/vu_singer.jpg",
-            cover: "./image/vianhdaucobiet.jpg",
-            listening: 625
+            thumbnailM: "./image/vu_singer.jpg",
+            thumbnail: "./image/vianhdaucobiet.jpg",
+            duration: 625
         },
     ],
 
+    currentSong: {
+        encodeId: '1',
+        title: "We Dont Talk Anymore",
+        artistsNames: "Charlie Puth",
+        album: { title: "Lorem ipsum dolor sit amet" },
+        path: "./music/Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3",
+        thumbnailM: "./image/charlieputh_singer.jpg",
+        thumbnail: "./image/wedonttalkanymore.jpg",
+        duration: 155
+    },
     searchSongs: [],
     recentSongs: [],
     listUsers: [],
@@ -176,55 +197,50 @@ const app = {
         return result.data.data[128];
     },
 
+    apiGetInfoSongById: async function (id) {
+        const result = await axios({
+            url: 'http://localhost:5000/api/infoSong',
+            method: 'GET',
+            params: {
+                id: id
+            }
+        });
+
+        return result.data.data;
+    },
+
     // Render
     renderTitlePlayer: function () {
-        displaySongImg.src = this.currentSong.image;
-        displaySongName.innerHTML = this.stringCase(this.currentSong.name);
-        displayArtistName.innerHTML = this.stringCase(this.currentSong.artist);
-        displayCoverImg.src = this.currentSong.cover;
-        displayListening.innerHTML = this.currentSong.listening;
+        displaySongImg.src = this.currentSong.thumbnailM;
+        displaySongName.innerHTML = this.currentSong.title;
+        displayArtistName.innerHTML = this.currentSong.artistsNames;
+        displayCoverImg.src = this.currentSong.thumbnailM;
+        displayListening.innerHTML = this.currentSong.duration;
 
         // Reset current time and time duration 
         currentTime.innerHTML = '00:00';
         if (audio.duration) {
             durationTime.innerHTML = this.showCurrentTime(audio.duration);
         }
-
     },
 
-    renderListSong: function (list) {
+    renderListSong: function () {
+        let list = [];
 
-        const stringHtml = list.map((song, index) => {
-            return `
-        <li class="header__song ${index == this.currentIndex ? "active" : ""}" data-index="${index}">
-            <img class="header__song-img" src="${song.image}" alt="song-img">
-            <div class="header__song-content">
-                <div class="header__song-heading">
-                    <h3>${this.stringCase(song.name)}</h3>
-                    <div class="header__listening">
-                        <i class="fa-solid fa-headphones"></i>
-                        <span class="header__listening-count">${song.listening}</span>
-                    </div>
-                </div>
-                <p><span>Artist:</span>${this.stringCase(song.artist)}</p>
-            </div>
-        </li>
-        `;
-        });
-
-        listOfSongs.innerHTML = stringHtml.join('');
-    },
-
-    renderListSongByApi: function (list) {
+        if (this.searchSongs.length) {
+            list = this.searchSongs;
+        } else {
+            list = this.songs;
+        }
         console.log(list);
 
         const stringHtml = list.map((song, index) => {
             return `
-        <li class="header__song ${index == this.currentIndex ? "active" : ""}" data-index="${index}" data-id="${song.encodeId}">
+        <li class="header__song ${song.encodeId == this.currentId ? "active" : ""}" data-index="${index}" data-id="${song.encodeId}">
             <img class="header__song-img" src="${song.thumbnailM}" alt="song-img">
             <div class="header__song-content">
                 <div class="header__song-heading">
-                    <h3>${this.stringCase(song.title)}</h3>
+                    <h3>${song.title}</h3>
                     <div class="header__listening">
                         <i class="fa-solid fa-headphones"></i>
                         <span class="header__listening-count">${song.duration}</span>
@@ -243,9 +259,9 @@ const app = {
         const stringHtml = this.recentSongs.map((song, index) => {
             return `
         <li class="display__item">
-            <h3>${this.stringCase(song.name)}</h3>
-            <p><span>Artist:</span>${this.stringCase(song.artist)}</p>
-            <p><span>Info:</span>${song.info}</p>
+            <h3>${song.title}</h3>
+            <p><span>Artist:</span>${song.artistsNames}</p>
+            <p><span>Info:</span>${song.album.title}</p>
         </li>
         `;
         });
@@ -272,15 +288,6 @@ const app = {
             userIcon.style.display = 'none';
             userIconBtn.style.display = 'block';
         }
-    },
-
-    // Define properties
-    defineProperties: function () {
-        Object.defineProperty(this, 'currentSong', {
-            get: function () {
-                return this.songs[this.currentIndex];
-            }
-        });
     },
 
     // User Constructor
@@ -398,21 +405,39 @@ const app = {
 
         // Handle event when searching song from list
         searchInput.oninput = async function () {
+
+
             const keyword = searchInput.value;
             const promise = new Promise(function (resolve) {
                 _this.idInterval && clearTimeout(_this.idInterval);
 
                 _this.idInterval = setTimeout(function () {
                     resolve(keyword);
-                }, 2000);
+                }, 1000);
             });
 
             promise
                 .then(function (keyword) {
+                    return new Promise(function (resolve) {
+                        listOfSongs.innerHTML = '';
+                        spinner.style.display = 'block';
+
+                        setTimeout(function () {
+                            resolve(keyword);
+                        }, 1000);
+                    });
+                })
+                .then(function (keyword) {
                     return _this.apiSearchByKeyword(keyword);
                 })
                 .then(function (listSong) {
-                    _this.renderListSongByApi(listSong);
+                    spinner.style.display = 'none';
+                    if (listSong) {
+                        _this.searchSongs = [...listSong];
+                    } else {
+                        _this.searchSongs = [];
+                    }
+                    _this.renderListSong();
                 });
         };
 
@@ -422,15 +447,23 @@ const app = {
 
             if (songNode) {
                 const songId = songNode.getAttribute('data-id');
-                const song = await _this.apiGetSongById(songId);
 
-                audio.src = song;
+                const existSong = _this.songs.find(function (song) {
+                    return song.encodeId === songId;
+                });
+
+                if (existSong) {
+                    _this.currentSong = existSong;
+                } else {
+                    _this.currentSong = await _this.apiGetInfoSongById(songId);
+                    _this.currentSong.path = await _this.apiGetSongById(songId);
+                }
+
+                _this.currentId = _this.currentSong.encodeId;
+                _this.loadCurrentSong();
+                _this.addToRecentSongs();
+
                 audio.play();
-
-                // _this.addToRecentSongs();
-                // _this.currentIndex = songNode.getAttribute('data-index');
-                // _this.loadCurrentSong();
-
             }
         };
 
@@ -497,7 +530,7 @@ const app = {
     loadCurrentSong: function () {
         audio.src = this.currentSong.path;
         this.renderTitlePlayer();
-        this.renderListSong(this.songs);
+        this.renderListSong();
     },
 
     nextSong: function () {
@@ -506,6 +539,8 @@ const app = {
         } else {
             this.currentIndex++;
         }
+        this.currentSong = this.songs[this.currentIndex];
+        this.currentId = this.currentSong.encodeId;
         this.loadCurrentSong();
     },
 
@@ -515,6 +550,8 @@ const app = {
         } else {
             this.currentIndex--;
         }
+        this.currentSong = this.songs[this.currentIndex];
+        this.currentId = this.currentSong.encodeId;
         this.loadCurrentSong();
     },
 
@@ -525,6 +562,8 @@ const app = {
         } while (this.currentIndex === randomIndex);
 
         this.currentIndex = randomIndex;
+        this.currentSong = this.songs[this.currentIndex];
+        this.currentId = this.currentSong.encodeId;
         this.loadCurrentSong();
     },
 
@@ -576,48 +615,7 @@ const app = {
         clostBtn.click();
     },
 
-    // Uppercase string
-    stringCase: function (str) {
-        const convertToArray = str.toLowerCase().split(' ');
-        const result = convertToArray.map(function (val) {
-            return val.replace(val.charAt(0), val.charAt(0).toUpperCase());
-        });
-
-        return result.join(' ');
-    },
-
-    toSlug: function (string) {
-        //Đổi chữ hoa thành chữ thường
-        slug = string.toLowerCase();
-
-        //Đổi ký tự có dấu thành không dấu
-        slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
-        slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');
-        slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i');
-        slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o');
-        slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
-        slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
-        slug = slug.replace(/đ/gi, 'd');
-        //Xóa các ký tự đặt biệt
-        slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
-        //Đổi khoảng trắng thành ký tự gạch ngang
-        slug = slug.replace(/ /gi, "-");
-        //Đổi nhiều ký tự gạch ngang liên tiếp thành 1 ký tự gạch ngang
-        //Phòng trường hợp người nhập vào quá nhiều ký tự trắng
-        slug = slug.replace(/\-\-\-\-\-/gi, '-');
-        slug = slug.replace(/\-\-\-\-/gi, '-');
-        slug = slug.replace(/\-\-\-/gi, '-');
-        slug = slug.replace(/\-\-/gi, '-');
-        //Xóa các ký tự gạch ngang ở đầu và cuối
-        slug = '@' + slug + '@';
-        slug = slug.replace(/\@\-|\-\@|\@/gi, '');
-
-        return slug;
-    },
-
     start: function () {
-        // Define properties
-        this.defineProperties();
 
         // Handle DOM events
         this.handleEvents();
@@ -627,7 +625,7 @@ const app = {
 
         // Render
         this.renderTitlePlayer();
-        this.renderListSong(this.songs);
+        this.renderListSong();
         this.renderRecentTracks();
         this.renderButtons();
         this.renderUser();
