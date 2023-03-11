@@ -15,6 +15,15 @@
 - Quản lý tài khoản (xem danh sách yêu thích, thay đổi ảnh đại diện, ...)
 - Tạo danh sách bài hát yêu thích, thêm bớt bài hát trong danh sách
 
+## Cập nhật tương lai
+
+Sử dụng API Zing Mp3 version local
+
+```bash
+    cd data/zingmp3-api-local
+    npm start
+```
+
 ## Website
 
 [Check it out here](https://thinhle1208.github.io/music-player/)
