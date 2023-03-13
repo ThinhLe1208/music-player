@@ -403,43 +403,62 @@ const app = {
 
         // ===================== Sidebar =======================
 
-        // Handle event when searching song from list
-        searchInput.oninput = async function () {
+        // Handle event when searching song from list (then)
+        // searchInput.oninput = function () {
+        //     const keyword = searchInput.value;
+        //     const promise = new Promise(function (resolve) {
+        //         _this.idInterval && clearTimeout(_this.idInterval);
 
+        //         _this.idInterval = setTimeout(function () {
+        //             resolve(keyword);
+        //         }, 1000);
+        //     });
 
+        //     promise
+        //         .then(function (keyword) {
+        //             return new Promise(function (resolve) {
+        //                 listOfSongs.innerHTML = '';
+        //                 spinner.style.display = 'block';
+
+        //                 setTimeout(function () {
+        //                     resolve(keyword);
+        //                 }, 1000);
+        //             });
+        //         })
+        //         .then(function (keyword) {
+        //             return _this.apiSearchByKeyword(keyword);
+        //         })
+        //         .then(function (listSong) {
+        //             spinner.style.display = 'none';
+        //             if (listSong) {
+        //                 _this.searchSongs = [...listSong];
+        //             } else {
+        //                 _this.searchSongs = [];
+        //             }
+        //             _this.renderListSong();
+        //         });
+        // };
+
+        // Handle event when searching song from list (async/await)
+        searchInput.oninput = _this.debounce(async () => {
             const keyword = searchInput.value;
-            const promise = new Promise(function (resolve) {
-                _this.idInterval && clearTimeout(_this.idInterval);
 
-                _this.idInterval = setTimeout(function () {
-                    resolve(keyword);
-                }, 1000);
-            });
+            listOfSongs.innerHTML = '';
+            spinner.style.display = 'block';
 
-            promise
-                .then(function (keyword) {
-                    return new Promise(function (resolve) {
-                        listOfSongs.innerHTML = '';
-                        spinner.style.display = 'block';
+            const listSong = await _this.apiSearchByKeyword(keyword);
 
-                        setTimeout(function () {
-                            resolve(keyword);
-                        }, 1000);
-                    });
-                })
-                .then(function (keyword) {
-                    return _this.apiSearchByKeyword(keyword);
-                })
-                .then(function (listSong) {
-                    spinner.style.display = 'none';
-                    if (listSong) {
-                        _this.searchSongs = [...listSong];
-                    } else {
-                        _this.searchSongs = [];
-                    }
-                    _this.renderListSong();
-                });
-        };
+            await this.delay(1000);
+
+            spinner.style.display = 'none';
+
+            if (listSong) {
+                _this.searchSongs = [...listSong];
+            } else {
+                _this.searchSongs = [];
+            }
+            _this.renderListSong();
+        }, 2000);
 
         // Handle event when choosing song from list
         listOfSongs.onclick = async function (e) {
@@ -613,6 +632,26 @@ const app = {
         });
 
         clostBtn.click();
+    },
+
+    debounce: (fn, delay = 0) => {
+        let idTimeout;
+
+        return () => {
+            if (idTimeout) {
+                clearTimeout(idTimeout);
+            }
+
+            idTimeout = setTimeout(() => {
+                fn();
+            }, delay);
+        };
+    },
+
+    delay: (delay) => {
+        return new Promise((resolve) => {
+            setTimeout(resolve, delay);
+        });
     },
 
     start: function () {
